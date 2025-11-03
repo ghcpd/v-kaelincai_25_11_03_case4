@@ -1,0 +1,437 @@
+{
+  "description": "Comprehensive test data for refactoring evaluation",
+  "test_cases": [
+    {
+      "id": 1,
+      "name": "Valid User Data - Normal Case",
+      "category": "normal",
+      "type": "user",
+      "input": {
+        "name": "  john doe  ",
+        "email": "JOHN@EXAMPLE.COM",
+        "age": 25
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 2,
+      "name": "Valid Product Data - Normal Case",
+      "category": "normal",
+      "type": "product",
+      "input": {
+        "name": "  laptop  ",
+        "price": 999.99,
+        "quantity": 50
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 3,
+      "name": "Discount Calculation - Premium Customer",
+      "category": "normal",
+      "type": "discount",
+      "input": {
+        "price": 999.99,
+        "customer_type": "premium",
+        "quantity": 5
+      },
+      "expected": 0.25
+    },
+    {
+      "id": 4,
+      "name": "Discount Calculation - VIP Customer",
+      "category": "normal",
+      "type": "discount",
+      "input": {
+        "price": 1500.0,
+        "customer_type": "vip",
+        "quantity": 15
+      },
+      "expected": 0.40
+    },
+    {
+      "id": 5,
+      "name": "Discount Calculation - Regular Customer",
+      "category": "normal",
+      "type": "discount",
+      "input": {
+        "price": 50.0,
+        "customer_type": "regular",
+        "quantity": 3
+      },
+      "expected": 0.05
+    },
+    {
+      "id": 6,
+      "name": "User Data - Edge Case (Minimum Age)",
+      "category": "edge",
+      "type": "user",
+      "input": {
+        "name": "Baby Smith",
+        "email": "baby@example.com",
+        "age": 0
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 7,
+      "name": "User Data - Edge Case (Maximum Age)",
+      "category": "edge",
+      "type": "user",
+      "input": {
+        "name": "Elder Jones",
+        "email": "elder@example.com",
+        "age": 150
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Product Data - Edge Case (Zero Price)",
+      "category": "edge",
+      "type": "product",
+      "input": {
+        "name": "Free Sample",
+        "price": 0.0,
+        "quantity": 100
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 9,
+      "name": "Product Data - Edge Case (Maximum Price)",
+      "category": "edge",
+      "type": "product",
+      "input": {
+        "name": "Luxury Car",
+        "price": 1000000,
+        "quantity": 1
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Product Data - Edge Case (Maximum Quantity)",
+      "category": "edge",
+      "type": "product",
+      "input": {
+        "name": "Bulk Item",
+        "price": 1.99,
+        "quantity": 10000
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 11,
+      "name": "User Data - Invalid (Missing Name)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "email": "test@example.com",
+        "age": 30
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 12,
+      "name": "User Data - Invalid (Missing Email)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "name": "John Doe",
+        "age": 30
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 13,
+      "name": "User Data - Invalid (Negative Age)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "name": "Invalid User",
+        "email": "invalid@example.com",
+        "age": -5
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 14,
+      "name": "User Data - Invalid (Age Too High)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "name": "Ancient User",
+        "email": "ancient@example.com",
+        "age": 200
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 15,
+      "name": "User Data - Invalid (Bad Email Format)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "name": "Bad Email",
+        "email": "notanemail",
+        "age": 25
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 16,
+      "name": "User Data - Invalid (Multiple @ in Email)",
+      "category": "invalid",
+      "type": "user",
+      "input": {
+        "name": "Double At",
+        "email": "test@@example.com",
+        "age": 25
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 17,
+      "name": "User Data - Invalid (None Input)",
+      "category": "invalid",
+      "type": "user",
+      "input": null,
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 18,
+      "name": "Product Data - Invalid (Negative Price)",
+      "category": "invalid",
+      "type": "product",
+      "input": {
+        "name": "Invalid Product",
+        "price": -10.0,
+        "quantity": 5
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 19,
+      "name": "Product Data - Invalid (Price Too High)",
+      "category": "invalid",
+      "type": "product",
+      "input": {
+        "name": "Overpriced",
+        "price": 2000000,
+        "quantity": 1
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 20,
+      "name": "Product Data - Invalid (Negative Quantity)",
+      "category": "invalid",
+      "type": "product",
+      "input": {
+        "name": "Negative Stock",
+        "price": 50.0,
+        "quantity": -5
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 21,
+      "name": "Product Data - Invalid (Quantity Too High)",
+      "category": "invalid",
+      "type": "product",
+      "input": {
+        "name": "Too Much Stock",
+        "price": 10.0,
+        "quantity": 20000
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 22,
+      "name": "Product Data - Invalid (Missing Fields)",
+      "category": "invalid",
+      "type": "product",
+      "input": {
+        "name": "Incomplete"
+      },
+      "expected": {
+        "status": "error"
+      }
+    },
+    {
+      "id": 23,
+      "name": "Batch Processing - Mixed Valid Users",
+      "category": "normal",
+      "type": "batch",
+      "input": {
+        "items": [
+          {
+            "name": "Alice",
+            "email": "alice@example.com",
+            "age": 30
+          },
+          {
+            "name": "Bob",
+            "email": "bob@example.com",
+            "age": 45
+          },
+          {
+            "name": "Charlie",
+            "email": "charlie@example.com",
+            "age": 70
+          }
+        ],
+        "item_type": "user"
+      },
+      "expected": [
+        {"status": "success"},
+        {"status": "success"},
+        {"status": "success"}
+      ]
+    },
+    {
+      "id": 24,
+      "name": "Batch Processing - Mixed Valid and Invalid",
+      "category": "edge",
+      "type": "batch",
+      "input": {
+        "items": [
+          {
+            "name": "Valid User",
+            "email": "valid@example.com",
+            "age": 25
+          },
+          {
+            "name": "Invalid User",
+            "email": "bademail",
+            "age": 30
+          },
+          {
+            "name": "Another Valid",
+            "email": "another@example.com",
+            "age": 35
+          }
+        ],
+        "item_type": "user"
+      },
+      "expected": [
+        {"status": "success"},
+        {"status": "error"},
+        {"status": "success"}
+      ]
+    },
+    {
+      "id": 25,
+      "name": "Discount - Edge Case (Maximum Discount Cap)",
+      "category": "edge",
+      "type": "discount",
+      "input": {
+        "price": 2000.0,
+        "customer_type": "vip",
+        "quantity": 100
+      },
+      "expected": 0.45
+    },
+    {
+      "id": 26,
+      "name": "Discount - Invalid (Negative Price)",
+      "category": "invalid",
+      "type": "discount",
+      "input": {
+        "price": -100.0,
+        "customer_type": "premium",
+        "quantity": 5
+      },
+      "expected": 0.0
+    },
+    {
+      "id": 27,
+      "name": "Discount - Invalid (Negative Quantity)",
+      "category": "invalid",
+      "type": "discount",
+      "input": {
+        "price": 100.0,
+        "customer_type": "regular",
+        "quantity": -5
+      },
+      "expected": 0.0
+    },
+    {
+      "id": 28,
+      "name": "Discount - Edge Case (Unknown Customer Type)",
+      "category": "edge",
+      "type": "discount",
+      "input": {
+        "price": 100.0,
+        "customer_type": "unknown",
+        "quantity": 10
+      },
+      "expected": 0.0
+    },
+    {
+      "id": 29,
+      "name": "User Data - Edge Case (Senior Citizen)",
+      "category": "edge",
+      "type": "user",
+      "input": {
+        "name": "Senior Citizen",
+        "email": "senior@example.com",
+        "age": 65
+      },
+      "expected": {
+        "status": "success"
+      }
+    },
+    {
+      "id": 30,
+      "name": "User Data - Edge Case (Just Adult)",
+      "category": "edge",
+      "type": "user",
+      "input": {
+        "name": "Just Adult",
+        "email": "adult@example.com",
+        "age": 18
+      },
+      "expected": {
+        "status": "success"
+      }
+    }
+  ]
+}
