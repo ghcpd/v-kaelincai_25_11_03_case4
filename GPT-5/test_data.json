@@ -1,0 +1,104 @@
+{
+  "cases": [
+    {
+      "id": "normal",
+      "description": "Basic small dataset with two categories and no nesting or negatives.",
+      "input_mode": "list",
+      "input": [
+        {"id": 1, "category": "build", "duration": 5},
+        {"id": 2, "category": "test", "duration": 3},
+        {"id": 3, "category": "build", "duration": 7}
+      ],
+      "expected": {
+        "total_tasks": 3,
+        "total_duration": 15,
+        "avg_duration": 5.0,
+        "categories": {"build": 2, "test": 1},
+        "negative_duration_tasks": 0,
+        "nested_subtask_count": 0,
+        "max_depth": 1,
+        "invalid_records": 0
+      }
+    },
+    {
+      "id": "nested",
+      "description": "Tasks with nested subtasks at varying depth.",
+      "input_mode": "list",
+      "input": [
+        {"id": 10, "category": "deploy", "duration": 4, "subtasks": [
+          {"id": 11, "category": "deploy", "duration": 2},
+          {"id": 12, "category": "monitor", "duration": 1, "subtasks": [
+            {"id": 13, "category": "monitor", "duration": 1, "subtasks": [
+              {"id": 14, "category": "monitor", "duration": 1}
+            ]}
+          ]}
+        ]}
+      ],
+      "expected": {
+        "total_tasks": 5,
+        "total_duration": 9,
+        "avg_duration": 1.8,
+        "categories": {"deploy": 2, "monitor": 3},
+        "negative_duration_tasks": 0,
+        "nested_subtask_count": 4,
+        "max_depth": 4,
+        "invalid_records": 0
+      }
+    },
+    {
+      "id": "negative",
+      "description": "Dataset containing a negative duration which should be excluded from totals.",
+      "input_mode": "list",
+      "input": [
+        {"id": 20, "category": "build", "duration": 5},
+        {"id": 21, "category": "test", "duration": -3},
+        {"id": 22, "category": "build", "duration": 4}
+      ],
+      "expected": {
+        "total_tasks": 3,
+        "total_duration": 9,
+        "avg_duration": 4.5,
+        "categories": {"build": 2, "test": 1},
+        "negative_duration_tasks": 1,
+        "nested_subtask_count": 0,
+        "max_depth": 1,
+        "invalid_records": 0
+      }
+    },
+    {
+      "id": "invalid",
+      "description": "Invalid non-list input should yield zero tasks and count invalid records.",
+      "input_mode": "raw",
+      "input": {"foo": "bar"},
+      "expected": {
+        "total_tasks": 0,
+        "total_duration": 0,
+        "avg_duration": null,
+        "categories": {},
+        "negative_duration_tasks": 0,
+        "nested_subtask_count": 0,
+        "max_depth": 0,
+        "invalid_records": 1
+      }
+    },
+    {
+      "id": "large",
+      "description": "Large generated dataset performance test (JSON string input).",
+      "input_mode": "generate",
+      "generation": {
+        "repeat": 20000,
+        "base": {"category": "load", "duration": 1}
+      },
+      "expected": {
+        "total_tasks": 20000,
+        "total_duration": 20000,
+        "avg_duration": 1.0,
+        "categories": {"load": 20000},
+        "negative_duration_tasks": 0,
+        "nested_subtask_count": 0,
+        "max_depth": 1,
+        "invalid_records": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Project B requirements (post-refactor)
+orjson>=3.9.15  # optional acceleration for JSON parsing
