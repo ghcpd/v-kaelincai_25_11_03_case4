@@ -1,7 +1,0 @@
-{
-  "avg_elapsed": 0.031100940029136836,
-  "large_case_time": 0.1553523000329733,
-  "peak_memory_bytes": 14368179,
-  "accuracy": 1.0,
-  "edge_accuracy": 1.0
-}

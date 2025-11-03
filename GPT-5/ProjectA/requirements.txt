@@ -1,2 +1,0 @@
-# Project A requirements (pre-refactor)
-# Intentionally minimal; uses only standard library.
