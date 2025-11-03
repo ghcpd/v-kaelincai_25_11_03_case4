@@ -1,0 +1,309 @@
+{
+	"cases": [
+		{
+			"id": "normal_balanced",
+			"description": "Typical release dataset with varied module health scores",
+			"type": "normal",
+			"input": {
+				"modules": [
+					{
+						"module": "payments.gateway",
+						"loc": 4200,
+						"complexity": 32,
+						"coverage": 78.5,
+						"last_updated": "2025-10-01T12:45:00Z",
+						"tags": ["critical", "backend"]
+					},
+					{
+						"module": "search.index",
+						"loc": 1500,
+						"complexity": 18,
+						"coverage": 88.2,
+						"last_updated": "2025-10-02T08:15:00Z",
+						"tags": ["backend"]
+					},
+					{
+						"module": "analytics.core",
+						"loc": 800,
+						"complexity": 12,
+						"coverage": 92.0,
+						"last_updated": "2025-09-29T20:30:00Z",
+						"tags": ["data"]
+					}
+				],
+				"quality_thresholds": {
+					"coverage_min": 80.0,
+					"complexity_max": 25,
+					"loc_max": 5000
+				}
+			},
+			"expected_pre": {
+				"summary": {
+					"module_count": 3,
+					"avg_coverage": 86.233,
+					"median_coverage": 88.2,
+					"weighted_risk": 0.424318
+				},
+				"breaches": ["payments.gateway"]
+			},
+			"expected_post": {
+				"summary": {
+					"module_count": 3,
+					"avg_coverage": 86.233,
+					"median_coverage": 88.2,
+					"weighted_risk": 0.424318
+				},
+				"breaches": [
+					{
+						"module": "payments.gateway",
+						"issues": ["complexity", "coverage"]
+					}
+				],
+				"diagnostics": {
+					"invalid_records": 0,
+					"errors": []
+				}
+			}
+		},
+		{
+			"id": "edge_empty",
+			"description": "No modules supplied should yield empty aggregates",
+			"type": "edge",
+			"input": {
+				"modules": [],
+				"quality_thresholds": {
+					"coverage_min": 75.0,
+					"complexity_max": 30,
+					"loc_max": 4000
+				}
+			},
+			"expected_pre": {
+				"summary": {
+					"module_count": 0,
+					"avg_coverage": 0.0,
+					"median_coverage": 0.0,
+					"weighted_risk": 0.0
+				},
+				"breaches": []
+			},
+			"expected_post": {
+				"summary": {
+					"module_count": 0,
+					"avg_coverage": 0.0,
+					"median_coverage": 0.0,
+					"weighted_risk": 0.0
+				},
+				"breaches": [],
+				"diagnostics": {
+					"invalid_records": 0,
+					"errors": []
+				}
+			}
+		},
+		{
+			"id": "duplicate_modules",
+			"description": "Dataset containing repeated modules and high-risk thresholds",
+			"type": "normal",
+			"input": {
+				"modules": [
+					{
+						"module": "legacy.api",
+						"loc": 6000,
+						"complexity": 44,
+						"coverage": 55.1,
+						"last_updated": "2025-08-18T14:00:00Z"
+					},
+					{
+						"module": "legacy.api",
+						"loc": 6000,
+						"complexity": 44,
+						"coverage": 55.1,
+						"last_updated": "2025-08-18T14:00:00Z"
+					},
+					{
+						"module": "modern.service",
+						"loc": 3000,
+						"complexity": 20,
+						"coverage": 88.0,
+						"last_updated": "2025-09-21T11:22:00Z"
+					}
+				],
+				"quality_thresholds": {
+					"coverage_min": 70.0,
+					"complexity_max": 40,
+					"loc_max": 5500
+				}
+			},
+			"expected_pre": {
+				"summary": {
+					"module_count": 3,
+					"avg_coverage": 66.067,
+					"median_coverage": 55.1,
+					"weighted_risk": 0.362963
+				},
+				"breaches": [
+					"legacy.api",
+					"legacy.api",
+					"legacy.api"
+				]
+			},
+			"expected_post": {
+				"summary": {
+					"module_count": 3,
+					"avg_coverage": 66.067,
+					"median_coverage": 55.1,
+					"weighted_risk": 0.362963
+				},
+				"breaches": [
+					{
+						"module": "legacy.api",
+						"issues": ["complexity", "coverage", "duplicate", "loc"]
+					}
+				],
+				"diagnostics": {
+					"invalid_records": 0,
+					"errors": []
+				}
+			}
+		},
+		{
+			"id": "invalid_entry",
+			"description": "Malformed record with non-numeric coverage should be rejected",
+			"type": "invalid",
+			"input": {
+				"modules": [
+					{
+						"module": "broken.mod",
+						"loc": 1200,
+						"complexity": 18,
+						"coverage": "unknown",
+						"last_updated": "2025-07-01T05:00:00Z"
+					},
+					{
+						"module": "safe.mod",
+						"loc": 900,
+						"complexity": 12,
+						"coverage": 89.4,
+						"last_updated": "2025-07-02T09:30:00Z"
+					}
+				],
+				"quality_thresholds": {
+					"coverage_min": 85.0,
+					"complexity_max": 30,
+					"loc_max": 5000
+				}
+			},
+			"expected_pre": {
+				"error": "ValueError"
+			},
+			"expected_post": {
+				"summary": {
+					"module_count": 1,
+					"avg_coverage": 89.4,
+					"median_coverage": 89.4,
+					"weighted_risk": 1.0
+				},
+				"breaches": [],
+				"diagnostics": {
+					"invalid_records": 1,
+					"errors": [
+						{
+							"module": "broken.mod",
+							"issue": "Non-numeric coverage"
+						}
+					]
+				}
+			}
+		},
+		{
+			"id": "large_dataset",
+			"description": "Broader sample approximating production volumes",
+			"type": "edge",
+			"input": {
+				"modules": [
+					{
+						"module": "analytics.core",
+						"loc": 1200,
+						"complexity": 10,
+						"coverage": 91.0,
+						"last_updated": "2025-06-21T02:45:00Z"
+					},
+					{
+						"module": "analytics.ingest",
+						"loc": 2300,
+						"complexity": 14,
+						"coverage": 87.5,
+						"last_updated": "2025-06-22T12:15:00Z"
+					},
+					{
+						"module": "analytics.clean",
+						"loc": 1800,
+						"complexity": 11,
+						"coverage": 90.0,
+						"last_updated": "2025-06-23T17:10:00Z"
+					},
+					{
+						"module": "ui.dashboard",
+						"loc": 2100,
+						"complexity": 16,
+						"coverage": 79.2,
+						"last_updated": "2025-06-24T09:42:00Z"
+					},
+					{
+						"module": "ui.chart",
+						"loc": 900,
+						"complexity": 9,
+						"coverage": 94.3,
+						"last_updated": "2025-06-24T10:00:00Z"
+					},
+					{
+						"module": "jobs.scheduler",
+						"loc": 3200,
+						"complexity": 21,
+						"coverage": 82.1,
+						"last_updated": "2025-06-24T11:37:00Z"
+					}
+				],
+				"quality_thresholds": {
+					"coverage_min": 85.0,
+					"complexity_max": 22,
+					"loc_max": 4000
+				}
+			},
+			"expected_pre": {
+				"summary": {
+					"module_count": 6,
+					"avg_coverage": 87.35,
+					"median_coverage": 88.75,
+					"weighted_risk": 0.185615
+				},
+				"breaches": [
+					"ui.dashboard",
+					"jobs.scheduler"
+				]
+			},
+			"expected_post": {
+				"summary": {
+					"module_count": 6,
+					"avg_coverage": 87.35,
+					"median_coverage": 88.75,
+					"weighted_risk": 0.185615
+				},
+				"breaches": [
+					{
+						"module": "jobs.scheduler",
+						"issues": ["coverage"]
+					},
+					{
+						"module": "ui.dashboard",
+						"issues": ["coverage"]
+					}
+				],
+				"diagnostics": {
+					"invalid_records": 0,
+					"errors": []
+				}
+			}
+		}
+	]
+}
