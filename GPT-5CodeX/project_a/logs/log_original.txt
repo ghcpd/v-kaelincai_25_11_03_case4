@@ -1,0 +1,1 @@
+Run ./run_tests.sh to generate execution logs in JSON format.

@@ -1,0 +1,235 @@
+{
+  "cases": [
+    {
+      "name": "baseline_normal",
+      "case_type": "normal",
+      "input": {
+        "threshold": 1000.0,
+        "base_currency": "USD",
+        "home_country": "US",
+        "transactions": [
+          {
+            "id": "t1",
+            "amount": 120.5,
+            "category": "groceries",
+            "currency": "USD",
+            "tags": ["weekly"],
+            "country": "US"
+          },
+          {
+            "id": "t2",
+            "amount": 980.0,
+            "category": "rent",
+            "currency": "USD",
+            "tags": [],
+            "country": "US"
+          },
+          {
+            "id": "t3",
+            "amount": 1500.0,
+            "category": "electronics",
+            "currency": "USD",
+            "tags": ["FRAUD"],
+            "country": "US"
+          },
+          {
+            "id": "t4",
+            "amount": "89.90",
+            "category": null,
+            "currency": "USD",
+            "tags": [],
+            "country": "US"
+          },
+          {
+            "id": "t5",
+            "amount": 0.0,
+            "category": "utilities",
+            "currency": "USD",
+            "tags": [],
+            "country": "US"
+          }
+        ]
+      },
+      "expected": {
+        "total_amount": 2690.4,
+        "average_amount": 538.08,
+        "transaction_count": 5,
+        "category_totals": {
+          "groceries": 120.5,
+          "rent": 980.0,
+          "electronics": 1500.0,
+          "uncategorized": 89.9,
+          "utilities": 0.0
+        },
+        "high_risk_transactions": [
+          {
+            "id": "t3",
+            "amount": 1500.0,
+            "reason": "amount_exceeds_threshold;high_risk_tag"
+          }
+        ],
+        "currency_mismatch_count": 0,
+        "invalid_entries": []
+      }
+    },
+    {
+      "name": "empty_transactions",
+      "case_type": "edge",
+      "input": {
+        "threshold": 500.0,
+        "base_currency": "USD",
+        "home_country": "US",
+        "transactions": []
+      },
+      "expected": {
+        "total_amount": 0.0,
+        "average_amount": 0.0,
+        "transaction_count": 0,
+        "category_totals": {},
+        "high_risk_transactions": [],
+        "currency_mismatch_count": 0,
+        "invalid_entries": []
+      }
+    },
+    {
+      "name": "mixed_quality_entries",
+      "case_type": "edge",
+      "input": {
+        "threshold": 200.0,
+        "base_currency": "USD",
+        "home_country": "US",
+        "transactions": [
+          {
+            "id": "a1",
+            "amount": "250.0",
+            "category": "services",
+            "currency": "EUR",
+            "tags": ["chargeback"],
+            "country": "DE"
+          },
+          {
+            "id": "a2",
+            "category": "services",
+            "currency": "USD",
+            "tags": [],
+            "country": "US"
+          },
+          {
+            "id": "a3",
+            "amount": "oops",
+            "category": "misc",
+            "currency": "USD",
+            "tags": [],
+            "country": "US"
+          },
+          42,
+          {
+            "id": "a4",
+            "amount": 50.0,
+            "category": "travel",
+            "currency": "USD",
+            "tags": [],
+            "country": "CA"
+          }
+        ]
+      },
+      "expected": {
+        "total_amount": 300.0,
+        "average_amount": 150.0,
+        "transaction_count": 2,
+        "category_totals": {
+          "services": 250.0,
+          "travel": 50.0
+        },
+        "high_risk_transactions": [
+          {
+            "id": "a1",
+            "amount": 250.0,
+            "reason": "amount_exceeds_threshold;high_risk_tag"
+          },
+          {
+            "id": "a4",
+            "amount": 50.0,
+            "reason": "foreign_transaction"
+          }
+        ],
+        "currency_mismatch_count": 1,
+        "invalid_entries": [
+          {
+            "index": 1,
+            "reason": "missing_amount"
+          },
+          {
+            "index": 2,
+            "reason": "invalid_amount"
+          },
+          {
+            "index": 3,
+            "reason": "not_a_dict"
+          }
+        ]
+      }
+    },
+    {
+      "name": "large_dataset",
+      "case_type": "performance",
+      "input": {
+        "threshold": 500.0,
+        "base_currency": "USD",
+        "home_country": "US",
+        "transactions": [
+          {"id": "t1", "amount": 37.5, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t2", "amount": 75.0, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t3", "amount": 112.5, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t4", "amount": 150.0, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t5", "amount": 187.5, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t6", "amount": 225.0, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t7", "amount": 262.5, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t8", "amount": 300.0, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t9", "amount": 337.5, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t10", "amount": 375.0, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t11", "amount": 412.5, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t12", "amount": 450.0, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t13", "amount": 487.5, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t14", "amount": 525.0, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t15", "amount": 562.5, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t16", "amount": 600.0, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t17", "amount": 637.5, "category": "cat2", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t18", "amount": 675.0, "category": "cat0", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t19", "amount": 712.5, "category": "cat1", "currency": "USD", "tags": [], "country": "US"},
+          {"id": "t20", "amount": 750.0, "category": "cat2", "currency": "USD", "tags": [], "country": "US"}
+        ]
+      },
+      "expected": {
+        "total_amount": 7875.0,
+        "average_amount": 393.75,
+        "transaction_count": 20,
+        "category_totals": {
+          "cat0": 2362.5,
+          "cat1": 2625.0,
+          "cat2": 2887.5
+        },
+        "high_risk_transactions": [
+          {"id": "t14", "amount": 525.0, "reason": "amount_exceeds_threshold"},
+          {"id": "t15", "amount": 562.5, "reason": "amount_exceeds_threshold"},
+          {"id": "t16", "amount": 600.0, "reason": "amount_exceeds_threshold"},
+          {"id": "t17", "amount": 637.5, "reason": "amount_exceeds_threshold"},
+          {"id": "t18", "amount": 675.0, "reason": "amount_exceeds_threshold"},
+          {"id": "t19", "amount": 712.5, "reason": "amount_exceeds_threshold"},
+          {"id": "t20", "amount": 750.0, "reason": "amount_exceeds_threshold"}
+        ],
+        "currency_mismatch_count": 0,
+        "invalid_entries": []
+      }
+    },
+    {
+      "name": "non_dict_input",
+      "case_type": "invalid",
+      "input": [1, 2, 3],
+      "expect_error": {
+        "type": "ValueError",
+        "message_contains": "dictionary"
+      }
+    }
+  ]
+}
